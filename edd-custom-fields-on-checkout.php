@@ -24,7 +24,7 @@ function dcg_edd_custom_checkout_fields() {
     </p>
 <?php
 }
-add_action( 'edd_purchase_form_user_info', 'dcg_edd_custom_checkout_fields' );
+add_action( 'edd_purchase_form_user_info_fields', 'dcg_edd_custom_checkout_fields' );
 
 // Check for errors with custom fields
 function dcg_edd_validate_custom_fields( $valid_data, $data ) {
