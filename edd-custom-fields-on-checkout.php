@@ -6,7 +6,7 @@ Description: Adds 'Website' and 'Extra note(s)' custom fields to the checkout sc
 Version: 1.1
 Author: Dipak C. Gajjar
 Author URI: https://dipakgajjar.com
-License: Licence: GPLv2
+License: GPLv2 or later
 */
 
 // Output custom field HTML on checkout
@@ -65,10 +65,10 @@ function dcg_edd_updated_edited_purchase( $payment_id ) {
 }
 add_action( 'edd_updated_edited_purchase', 'dcg_edd_updated_edited_purchase' );
 
-// Add a {website} tag to use in either the purchase receipt email or admin notification emails
+// Add a {website} and {extra_note} tag to use in either the purchase receipt email or admin notification emails
 if ( function_exists( 'edd_add_email_tag' ) ) {
     edd_add_email_tag( 'website', 'Website, service ordered for.', 'dcg_edd_email_tag_website' );
-    edd_add_email_tag( 'extra_note', 'Extra note(s) submitted during checkout.', 'dcg_edd_email_tag_extra_note' );
+    edd_add_email_tag( 'extra_note', 'Extra note(s) submitted by the buyer during checkout.', 'dcg_edd_email_tag_extra_note' );
 }
 // {website} email tag
 function dcg_edd_email_tag_website( $payment_id ) {
