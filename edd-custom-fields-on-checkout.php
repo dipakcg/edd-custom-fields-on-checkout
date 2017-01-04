@@ -2,7 +2,7 @@
 /*
 Plugin Name: Easy Digital Downloads - Custom Fields On Checkout
 Plugin URI: https://github.com/dipakcg/edd-custom-fields-on-checkout
-Description: Adds 'Website' and 'Extra note' custom fields to the checkout screen in Easy Digital Downloads.
+Description: Adds 'Website' and 'Extra note(s)' custom fields to the checkout screen in Easy Digital Downloads.
 Version: 1.1
 Author: Dipak C. Gajjar
 Author URI: https://dipakgajjar.com
@@ -18,9 +18,9 @@ function dcg_edd_custom_checkout_fields() {
         <input class="edd-input" type="text" name="edd_website" id="edd-website" value="" />
     </p>
     <p>
-        <label class="edd-label" for="edd-message"><?php _e('Extra note', 'edd'); ?></label>
+        <label class="edd-label" for="edd-message"><?php _e('Extra note(s)', 'edd'); ?></label>
         <span class="edd-description">Anything you feel we need to know.</span>
-        <textarea class="edd-input" name="edd_customer_message" id="edd-customer-message"></textarea>
+        <textarea class="edd-input" name="edd_extra_note" id="edd-extra-note"></textarea>
     </p>
 <?php
 }
@@ -36,8 +36,8 @@ add_action( 'edd_checkout_error_checks', 'dcg_edd_validate_custom_fields', 10, 2
 
 // Store custom field data in the payment meta
 function dcg_edd_store_custom_fields( $payment_meta ) {
-    $payment_meta['website'] = isset($_POST['edd_website']) ? $_POST['edd_website'] : '';
-    $payment_meta['customer_message'] = isset($_POST['edd_customer_message']) ? $_POST['edd_customer_message'] : '';
+    $payment_meta['website'] = isset($_POST['edd_website']) ? $_POST['edd_website'] : 'None';
+    $payment_meta['extra_note'] = isset($_POST['edd_extra_note']) ? $_POST['edd_extra_note'] : 'None';
     return $payment_meta;
 }
 add_filter('edd_payment_meta', 'dcg_edd_store_custom_fields');
@@ -68,16 +68,16 @@ add_action( 'edd_updated_edited_purchase', 'dcg_edd_updated_edited_purchase' );
 // Add a {website} tag to use in either the purchase receipt email or admin notification emails
 if ( function_exists( 'edd_add_email_tag' ) ) {
     edd_add_email_tag( 'website', 'Website, service ordered for.', 'dcg_edd_email_tag_website' );
-    edd_add_email_tag( 'customer_message', 'Customer message submitted during checkout.', 'dcg_edd_email_tag_customer_message' );
+    edd_add_email_tag( 'extra_note', 'Extra note(s) submitted during checkout.', 'dcg_edd_email_tag_extra_note' );
 }
 // {website} email tag
 function dcg_edd_email_tag_website( $payment_id ) {
     $payment_data = edd_get_payment_meta( $payment_id );
     return $payment_data['website'];
 }
-// {customer_message} email tag
-function dcg_edd_email_tag_customer_message( $payment_id ) {
+// {extra_note} email tag
+function dcg_edd_email_tag_extra_note( $payment_id ) {
     $payment_data = edd_get_payment_meta( $payment_id );
-    return $payment_data['customer_message'];
+    return $payment_data['extra_note'];
 }
 ?>
